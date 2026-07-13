@@ -1,122 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
+  // 🎯 1000時間という絶対の目標値
+  const targetHours = 1000;
+  // 📅 目標期限（2027年2月1日 0時0分0秒）のタイムスタンプを作る
+  const deadline = new Date('2027-02-01T00:00:00').getTime();
+  // 🕒 「今この瞬間」の最新のタイムスタンプを取得  →new Date().getTime()と同じ意味
+  const now = Date.now();
+  // 残り時間のミリ秒を計算（未来の期限 - 今）
+  const diffMs = deadline - now;
+
+  const remainingDays = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+  const remainingHours = targetHours - totalHours;
+
+  const dailyRequiredAverage = remainingDays > 0 ? (remainingHours / remainingDays) : 0;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{
+      padding: '20px',
+      background: '#000000',
+      color: '#ffffff',
+      minHeight: '100vh',
+      fontFamily: '"DotGothic16", sans-serif',
+      margin: '16px auto',
+    }}>
+      <h1>My Dedicated Hours</h1>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* 📊 運命のカウントダウンメーター */}
+      <div style={{
+        border: '3px double #ffffff',
+        padding: '20px',
+        maxWidth: '400px',
+        marginBottom: '20px',
+      }}>
+        <div>▶ 2027年2月1日 までの 残り日数: {remainingDays} 日</div>
+        <div>▶ 1000時間 達成までの 残り時間: {remainingHours} 時間</div>
+        <div style={{
+          color: '#ff5555',
+          marginTop: '10px'
+        }}>
+          今日から 毎日 【 {dailyRequiredAverage.toFixed(2)} 時間 】勉強せよ！
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
