@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
   const [inputHours, setInputHours] = useState('');
+  const [logs, setLogs] = useState(() => {
+    const local = localStorage.getItem('studyLogs');
+    return local ? JSON.parse(local) : {};
+  });
 
   // 🎯 1000時間という絶対の目標値
   const targetHours = 1000;
@@ -19,11 +23,16 @@ function App() {
   // 変数の値が変わるたびに自動保存
   useEffect(() => {
     localStorage.setItem('totalHours', totalHours);
-  },[totalHours])
+    localStorage.setItem('studyLogs', JSON.stringify(logs));
+  },[totalHours,logs])
 
   // 今日の勉強時間を入力する処理
   const handleAddHours = () => {
     if (!inputHours || Number(inputHours) <= 0) return;
+    const d = new Date();
+    const todayStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    const nextLogs = {...logs, [todayStr]: Number(inputHours) };
+    setLogs(nextLogs);
     const nextTotalHours = totalHours + Number(inputHours);
     setTotalHours(nextTotalHours);
     setInputHours('');
