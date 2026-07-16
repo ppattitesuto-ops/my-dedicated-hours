@@ -1,0 +1,22 @@
+.container {
+  margin-top: 20px;
+}
+
+.studyHours {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 5px;
+  width: 60px;
+  font-family: "DotGothic16", sans-serif;
+}
+
+.addBtn {
+  margin-left: 10px;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 5px;
+  cursor: pointer;
+  font-family: "DotGothic16", sans-serif;
+}

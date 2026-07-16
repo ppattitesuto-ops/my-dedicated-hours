@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import HourForm from "./HourForm";
+import CalendarList from "./CalendarList";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -20,23 +22,37 @@ function App() {
   const remainingHours = targetHours - totalHours;
   const dailyRequiredAverage = remainingDays > 0 ? (remainingHours / remainingDays) : 0;
 
-  // 変数の値が変わるたびに自動保存
+  // 変数の値が変わるたびに自動保存 
   useEffect(() => {
     localStorage.setItem('totalHours', totalHours);
     localStorage.setItem('studyLogs', JSON.stringify(logs));
-  },[totalHours,logs])
+  }, [totalHours, logs])
+  // ※キーや変数にはそのデータの中身に何が入っているかわかるようにする。何を表すか、文字なのか、(Str)数字なのか(NUM)
 
   // 今日の勉強時間を入力する処理
   const handleAddHours = () => {
     if (!inputHours || Number(inputHours) <= 0) return;
     const d = new Date();
     const todayStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
-    const nextLogs = {...logs, [todayStr]: Number(inputHours) };
+    const nextLogs = { ...logs, [todayStr]: Number(inputHours) };
     setLogs(nextLogs);
     const nextTotalHours = totalHours + Number(inputHours);
     setTotalHours(nextTotalHours);
     setInputHours('');
   }
+  // ※コードの可読性をよくするためにも、計算するものなどは一度変数に入れて管理する。情報を細かく管理することでコードが分かりやすくなる。
+
+  const recentDateArr = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+
+    const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+
+    recentDateArr.push(dateStr);
+  }
+
+  recentDateArr.reverse();
 
   return (
     <div style={{
@@ -67,23 +83,12 @@ function App() {
       </div>
 
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
-      <div style={{ marginTop: '20px' }}>
-        <span>▶ 今日の勉強時間を入れる: </span>
-        <input
-          type="number"
-          value={inputHours}
-          onChange={(e) => setInputHours(e.target.value)}
-          style={{ backgroundColor: '#000000', color: '#ffffff', border: '1px solid #ffffff', padding: '5px', width: '60px', fontFamily: '"DotGothic16", sans-serif' }}
-        />
-        <span> 時間</span>
-        <button
-          onClick={() => handleAddHours()}
-          style={{ marginLeft: '10px', backgroundColor: '#000000', color: '#ffffff', border: '1px solid #ffffff', padding: '5px', cursor: 'pointer', fontFamily: '"DotGothic16", sans-serif' }}
-        >
-          ⚔加算する
-        </button>
-      </div>
+      <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} />
       <div>今日までの勉強時間: {totalHours}時間</div>
+
+      {/* // 日々の学習ログカレンダーエリア */}
+      <h2 style={{ fontSize: '18px',marginTop: '30px'}}>▶ 勉強の記録（直近7日間）</h2>
+      <CalendarList recentDateArr={recentDateArr} logs={logs} />
     </div>
   );
 }
