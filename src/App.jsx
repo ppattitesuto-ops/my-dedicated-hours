@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
+import CountDownMeter from "./CountdownMeter";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -66,21 +67,7 @@ function App() {
       <h1>My Dedicated Hours</h1>
 
       {/* 📊 運命のカウントダウンメーター */}
-      <div style={{
-        border: '3px double #ffffff',
-        padding: '20px',
-        maxWidth: '400px',
-        marginBottom: '20px',
-      }}>
-        <div>▶ 2027年2月1日 までの 残り日数: {remainingDays} 日</div>
-        <div>▶ 1000時間 達成までの 残り時間: {remainingHours} 時間</div>
-        <div style={{
-          color: '#ff5555',
-          marginTop: '10px'
-        }}>
-          今日から 毎日 【 {dailyRequiredAverage.toFixed(2)} 時間 】勉強せよ！
-        </div>
-      </div>
+      <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage}/>
 
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
       <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} />

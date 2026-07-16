@@ -1,0 +1,11 @@
+.container {
+  border: 3px double #ffffff;
+  padding: 20px;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.average {
+  color: #ff5555;
+  margin-top: 10px;
+}
