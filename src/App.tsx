@@ -90,6 +90,27 @@ function App() {
   return (
     <div className={`${styles.container} ${isSaboriActive ? styles.curseActive : ''}`}>
       <h1>My Dedicated Hours</h1>
+      {/* 🔔 iPhoneの通知の壁を破壊する、手動許可ボタン */}
+      <button
+        onClick={() => {
+          // ユーザーの手動クリックをトリガーにして、Notificationを強制発動させる！
+          Notification.requestPermission().then((permission) => {
+            alert(`通知ステータス: ${permission}`); // ➔ 許可されたら granted と出ます！
+          });
+        }}
+        style={{
+          marginTop: '20px',
+          backgroundColor: '#000000',
+          color: '#39ff14', // ネオングリーン
+          border: '1px solid #39ff14',
+          padding: '10px',
+          cursor: 'pointer',
+          fontFamily: '"DotGothic16", sans-serif',
+          display: 'block'
+        }}
+      >
+        ⚙️ 通知を許可せよ
+      </button>
 
       {/* 📊 運命のカウントダウンメーター */}
       <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage} />
