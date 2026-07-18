@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
 import CountDownMeter from "./CountdownMeter";
-
+import styles from './App.module.css';
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -44,27 +44,28 @@ function App() {
   }
   // ※コードの可読性をよくするためにも、計算するものなどは一度変数に入れて管理する。情報を細かく管理することでコードが分かりやすくなる。
 
-  const recentDateArr = [];
+  // 直近7日間の日付データ↓TypeScriptらしく型宣言
+  const recentDateArr: String[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-
     const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
-
     recentDateArr.push(dateStr);
   }
-
   recentDateArr.reverse();
 
+  let weeklyTotalHours = 0;
+
+  for(let i = 0; i < recentDateArr.length; i++) {
+    const datekey = recentDateArr[i];
+    const dayHours = 
+  }
+
+
+  const isSaboriActive = weeklyTotalHours < 25;
+
   return (
-    <div style={{
-      padding: '20px',
-      background: '#000000',
-      color: '#ffffff',
-      minHeight: '100vh',
-      fontFamily: '"DotGothic16", sans-serif',
-      margin: '16px auto',
-    }}>
+    <div className={`${styles.container} ${weeklyTotalHours < 25 ? styles.curseActive : ''}`}>
       <h1>My Dedicated Hours</h1>
 
       {/* 📊 運命のカウントダウンメーター */}
@@ -75,7 +76,7 @@ function App() {
     
 
       {/* // 日々の学習ログカレンダーエリア */}
-      <h2 style={{ fontSize: '18px',marginTop: '30px'}}>▶ 勉強の記録（直近7日間）</h2>
+      <h2 className={styles.calendarTitle}>▶ 勉強の記録（直近7日間）</h2>
       <CalendarList recentDateArr={recentDateArr} logs={logs} />
     </div>
   );

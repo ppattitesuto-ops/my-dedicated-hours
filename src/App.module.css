@@ -1,0 +1,18 @@
+.container {
+  padding: 20px;
+  background: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: "DotGothic16", sans-serif;
+  margin: 16px auto;
+}
+
+.curseActive {
+  border-color: #ff5555;
+  border-style: double;
+}
+
+.calendarTitle {
+  font-size: 18px;
+  margin-top: 30px;
+}
