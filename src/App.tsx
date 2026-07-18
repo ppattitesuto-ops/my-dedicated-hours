@@ -45,7 +45,7 @@ function App() {
   // ※コードの可読性をよくするためにも、計算するものなどは一度変数に入れて管理する。情報を細かく管理することでコードが分かりやすくなる。
 
   // 直近7日間の日付データ↓TypeScriptらしく型宣言
-  const recentDateArr: String[] = [];
+  const recentDateArr: string[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -54,26 +54,27 @@ function App() {
   }
   recentDateArr.reverse();
 
+  // 直近７日間のデータを合計して判定
   let weeklyTotalHours = 0;
-
-  for(let i = 0; i < recentDateArr.length; i++) {
+  for (let i = 0; i < recentDateArr.length; i++) {
     const datekey = recentDateArr[i];
-    const dayHours = 
+    const dayHours = logs[datekey] || 0;
+    weeklyTotalHours += dayHours;
   }
+  const weeklytargetHours = 25;
+  const isSaboriActive = weeklyTotalHours < weeklytargetHours;
 
-
-  const isSaboriActive = weeklyTotalHours < 25;
 
   return (
-    <div className={`${styles.container} ${weeklyTotalHours < 25 ? styles.curseActive : ''}`}>
+    <div className={`${styles.container} ${isSaboriActive ? styles.curseActive : ''}`}>
       <h1>My Dedicated Hours</h1>
 
       {/* 📊 運命のカウントダウンメーター */}
-      <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage}/>
+      <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage} />
 
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
-      <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} totalHours={totalHours}/>
-    
+      <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} totalHours={totalHours} />
+
 
       {/* // 日々の学習ログカレンダーエリア */}
       <h2 className={styles.calendarTitle}>▶ 勉強の記録（直近7日間）</h2>
