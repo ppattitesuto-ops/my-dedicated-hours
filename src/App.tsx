@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
-import CountDownMeter from "./CountdownMeter";
+import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
 
 function App() {

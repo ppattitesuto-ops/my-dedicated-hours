@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* 💡 Bundler環境（Vite）で最も安全に動かすためのプロの設定 */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* 🛡️ Yahoo基準の厳格なバグ自動検知ルール（型安全） */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  /* 🪄 【超重要】ここで、お札ファイル（.d.ts）の24時間自動スキャン命令が完全に開通します！ */
+  "include": ["src", "src/**/*.d.ts"]
+}
