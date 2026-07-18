@@ -31,6 +31,28 @@ function App() {
   }, [totalHours, logs])
   // ※キーや変数にはそのデータの中身に何が入っているかわかるようにする。何を表すか、文字なのか、(Str)数字なのか(NUM)
 
+  // 毎日22時30分に通知
+  useEffect(() => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      Notification.requestPermission();
+    }
+    const timer = setInterval(() => {
+      const nowTime = new Date();
+      const currentHour = nowTime.getHours();
+      const currentMinute = nowTime.getMinutes();
+
+      if (currentHour === 22 && currentMinute === 30) {
+        if (Notification.permission === "granted") {
+          new Notification("さあ、明日のためにもう寝なさい。今日も地道に積み上げられたかな？", {
+            body: "もう25歳、今までの敗北の歴史を変えるんじゃないのか？",
+            icon: "/favicon.ico"
+          });
+        }
+      }
+    }, (1 * 1000 * 60));
+    return () => clearInterval(timer);
+  }, []);
+
   // 今日の勉強時間を入力する処理
   const handleAddHours = () => {
     if (!inputHours || Number(inputHours) <= 0) return;
