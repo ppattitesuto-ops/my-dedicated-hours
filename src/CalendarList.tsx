@@ -1,6 +1,11 @@
 import styles from './CalendarList.module.css';
 
-function CalendarList({ recentDateArr, logs }) {
+interface CalendarListProps {
+  recentDateArr: string[];
+  logs: Record< string, number>;
+}
+
+function CalendarList({ recentDateArr, logs }: CalendarListProps) {
   return (
     <div className={styles.container}>
       {recentDateArr.map((datekey) => {

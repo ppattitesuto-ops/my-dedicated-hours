@@ -1,6 +1,12 @@
 import styles from './CountDownMeter.module.css';
 
-function CountDownMeter({ remainingDays, remainingHours, dailyRequiredAverage }) {
+interface CountDownMeterProps {
+  remainingDays: number;
+  remainingHours: number;
+  dailyRequiredAverage: number;
+}
+
+function CountDownMeter({ remainingDays, remainingHours, dailyRequiredAverage }: CountDownMeterProps) {
   return (
     <div className={styles.container}>
       <div>▶ 2027年2月1日 までの 残り日数: {remainingDays} 日</div>

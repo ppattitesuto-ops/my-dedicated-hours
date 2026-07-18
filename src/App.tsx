@@ -3,6 +3,7 @@ import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
 import CountDownMeter from "./CountdownMeter";
 
+
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
   const [inputHours, setInputHours] = useState('');
@@ -25,7 +26,7 @@ function App() {
 
   // 変数の値が変わるたびに自動保存 
   useEffect(() => {
-    localStorage.setItem('totalHours', totalHours);
+    localStorage.setItem('totalHours', String(totalHours));
     localStorage.setItem('studyLogs', JSON.stringify(logs));
   }, [totalHours, logs])
   // ※キーや変数にはそのデータの中身に何が入っているかわかるようにする。何を表すか、文字なのか、(Str)数字なのか(NUM)
@@ -70,8 +71,8 @@ function App() {
       <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage}/>
 
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
-      <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} />
-      <div>今日までの勉強時間: {totalHours}時間</div>
+      <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} totalHours={totalHours}/>
+    
 
       {/* // 日々の学習ログカレンダーエリア */}
       <h2 style={{ fontSize: '18px',marginTop: '30px'}}>▶ 勉強の記録（直近7日間）</h2>
