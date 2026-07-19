@@ -3,7 +3,7 @@ import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
 import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import StudyGraph from "./StudyGraph";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -81,7 +81,6 @@ function App() {
     name: string;
     hours: number;
   }
-
   const graphData: StudyGraphDataItem[] = recentDateArr.map((datekey) => {
     const hours = logs[datekey] || 0;
     const shortDateStr = `${datekey.split('/')[1]}/${datekey.split('/')[2]}`;
@@ -118,14 +117,8 @@ function App() {
 
       {/* 直近1週間の勉強時間推移グラフエリア  */}
       <h3 className={styles.graphTitle}>▶ 勉強時間の推移（グラフ）</h3>
-      <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={graphData}>
-          <XAxis dataKey="name" stroke="#ffffff" className={styles.graphXY} />
-          <YAxis stroke="#ffffff" className={styles.graphXY} />
-          <Line type="monotone" dataKey="hours" stroke="#39ff14" strokeWidth={3} dot={{ fill: '#39ff14' }} />
-        </LineChart>
-      </ResponsiveContainer>
-      
+      <StudyGraph graphData={graphData} />
+
     </div>
   );
 }
