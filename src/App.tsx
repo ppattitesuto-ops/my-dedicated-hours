@@ -3,6 +3,7 @@ import HourForm from "./HourForm";
 import CalendarList from "./CalendarList";
 import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -76,6 +77,20 @@ function App() {
   }
   recentDateArr.reverse();
 
+  interface StudyGraphDataItem {
+    name: string;
+    hours: number;
+  }
+
+  const graphData: StudyGraphDataItem[] = recentDateArr.map((datekey) => {
+    const hours = logs[datekey] || 0;
+    const shortDateStr = `${datekey.split('/')[1]}/${datekey.split('/')[2]}`;
+    return {
+      name: shortDateStr,
+      hours
+    };
+  });
+
   // 直近７日間のデータを合計して判定
   let weeklyTotalHours = 0;
   for (let i = 0; i < recentDateArr.length; i++) {
@@ -86,7 +101,7 @@ function App() {
   const weeklytargetHours = 25;
   const isSaboriActive = weeklyTotalHours < weeklytargetHours;
 
-  // 削除ボタンは消しました。
+
   return (
     <div className={`${styles.container} ${isSaboriActive ? styles.curseActive : ''}`}>
       <h1>My Dedicated Hours</h1>
@@ -97,10 +112,20 @@ function App() {
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
       <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} totalHours={totalHours} />
 
-
       {/* // 日々の学習ログカレンダーエリア */}
       <h2 className={styles.calendarTitle}>▶ 勉強の記録（直近7日間）</h2>
       <CalendarList recentDateArr={recentDateArr} logs={logs} />
+
+      {/* 直近1週間の勉強時間推移グラフエリア  */}
+      <h3 className={styles.graphTitle}>▶ 勉強時間の推移（グラフ）</h3>
+      <ResponsiveContainer width="100%" height={200}>
+        <LineChart data={graphData}>
+          <XAxis dataKey="name" stroke="#ffffff" className={styles.graphXY} />
+          <YAxis stroke="#ffffff" className={styles.graphXY} />
+          <Line type="monotone" dataKey="hours" stroke="#39ff14" strokeWidth={3} dot={{ fill: '#39ff14' }} />
+        </LineChart>
+      </ResponsiveContainer>
+      
     </div>
   );
 }
