@@ -86,7 +86,7 @@ function App() {
   const weeklytargetHours = 25;
   const isSaboriActive = weeklyTotalHours < weeklytargetHours;
 
-
+  // 削除ボタンは消しました。
   return (
     <div className={`${styles.container} ${isSaboriActive ? styles.curseActive : ''}`}>
       <h1>My Dedicated Hours</h1>
