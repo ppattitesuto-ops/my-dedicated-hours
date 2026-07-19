@@ -4,6 +4,7 @@ import CalendarList from "./CalendarList";
 import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
 import StudyGraph from "./StudyGraph";
+import SaboriDays from "./SaboriDays";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -77,6 +78,17 @@ function App() {
   }
   recentDateArr.reverse();
 
+  // 直近７日間のデータを合計して判定
+  let weeklyTotalHours = 0;
+  for (let i = 0; i < recentDateArr.length; i++) {
+    const datekey = recentDateArr[i];
+    const dayHours = logs[datekey] || 0;
+    weeklyTotalHours += dayHours;
+  }
+  const weeklytargetHours = 25;
+  const isSaboriActive = weeklyTotalHours < weeklytargetHours;
+
+  // 直近７日間のデータを外部ライブラリRechartsを使ってグラフ化
   interface StudyGraphDataItem {
     name: string;
     hours: number;
@@ -90,32 +102,37 @@ function App() {
     };
   });
 
-  // 直近７日間のデータを合計して判定
-  let weeklyTotalHours = 0;
-  for (let i = 0; i < recentDateArr.length; i++) {
+  // 「何日連続で1分も勉強せずにサボっているか」を数える恐怖のカウンター
+  let continuousSaboriDays = 0;
+  for (let i = recentDateArr.length - 1; i >= 0; i--) {
     const datekey = recentDateArr[i];
     const dayHours = logs[datekey] || 0;
-    weeklyTotalHours += dayHours;
+    if (dayHours === 0) {
+      continuousSaboriDays += 1;
+    } else {
+      break;
+    }
   }
-  const weeklytargetHours = 25;
-  const isSaboriActive = weeklyTotalHours < weeklytargetHours;
 
 
   return (
     <div className={`${styles.container} ${isSaboriActive ? styles.curseActive : ''}`}>
-      <h1>My Dedicated Hours</h1>
 
-      {/* 📊 運命のカウントダウンメーター */}
+      {/* ⌛運命のカウントダウンメーター */}
+      <h1>My Dedicated Hours</h1>
       <CountDownMeter remainingDays={remainingDays} remainingHours={remainingHours} dailyRequiredAverage={dailyRequiredAverage} />
+
+      {/* 💀 連続サボり検知アナウンスエリア */}
+      <SaboriDays continuousSaboriDays={continuousSaboriDays} />
 
       {/* 🛠️ 今日の勉強時間をレコーディングするエリア */}
       <HourForm inputHours={inputHours} setInputHours={setInputHours} handleAddHours={handleAddHours} totalHours={totalHours} />
 
-      {/* // 日々の学習ログカレンダーエリア */}
+      {/* // 📅日々の学習ログカレンダーエリア */}
       <h2 className={styles.calendarTitle}>▶ 勉強の記録（直近7日間）</h2>
       <CalendarList recentDateArr={recentDateArr} logs={logs} />
 
-      {/* 直近1週間の勉強時間推移グラフエリア  */}
+      {/* 📈直近1週間の勉強時間推移グラフエリア  */}
       <h3 className={styles.graphTitle}>▶ 勉強時間の推移（グラフ）</h3>
       <StudyGraph graphData={graphData} />
 

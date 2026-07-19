@@ -1,0 +1,23 @@
+.SaboriInspect {
+  border: 3px double #ff5555;
+  background-color: #110000;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #ff5555;
+}
+
+.SaboriCoutinuous {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.SaboriAlertTitle {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.SaboriAlert {
+  color: #ff00ff;
+  animation: blink;
+}
