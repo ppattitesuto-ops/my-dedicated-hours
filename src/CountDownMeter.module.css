@@ -3,9 +3,32 @@
   padding: 20px;
   max-width: 400px;
   margin: 0 auto 20px;
+  box-sizing: border-box;
+}
+
+.meterLine {
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .average {
   color: #ff5555;
   margin-top: 10px;
+  font-size: 16px;
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+
+  }
+
+  .meterLine {
+    font-size: 14px;
+  }
+
+  .average {
+    font-size: 14px;
+  }
 }
