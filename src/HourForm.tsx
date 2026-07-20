@@ -26,7 +26,7 @@ function HourForm({ inputHours, setInputHours, handleAddHours, totalHours }: Hou
       >
         ⚔加算する
       </button>
-      <div>▶ 今日までの勉強時間: {totalHours}時間</div>
+      <div className={styles.totalHours}>▶ 今日までの勉強時間: {totalHours}時間</div>
     </div>
   );
 }

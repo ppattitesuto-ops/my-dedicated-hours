@@ -104,7 +104,7 @@ function App() {
 
   // 「何日連続で1分も勉強せずにサボっているか」を数える恐怖のカウンター
   let continuousSaboriDays = 0;
-  for (let i = recentDateArr.length - 1; i >= 0; i--) {
+  for (let i = recentDateArr.length - 2; i >= 0; i--) {
     const datekey = recentDateArr[i];
     const dayHours = logs[datekey] || 0;
     if (dayHours === 0) {
