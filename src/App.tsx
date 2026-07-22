@@ -5,6 +5,8 @@ import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
 import StudyGraph from "./StudyGraph";
 import SaboriDays from "./SaboriDays";
+import { doc, setDoc } from "firebase/firestore";
+import { db} from "./firebase";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -56,10 +58,20 @@ function App() {
   }, []);
 
   // 今日の勉強時間を入力する処理
-  const handleAddHours = () => {
+  const handleAddHours = async () => {
     if (!inputHours || Number(inputHours) <= 0) return;
     const d = new Date();
     const todayStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    const cloudFormatDate = todayStr.replaceAll('/', '-');
+
+    try {
+      await setDoc(doc(db, "studyLogs", cloudFormatDate), {
+        hours: Number(inputHours)
+      });
+      console.log("☁クラウドへの保存が完全大成功しました！");
+    } catch (error) {
+      console.error("✖ 通信エラー発生:", error);
+    }
     const nextLogs = { ...logs, [todayStr]: Number(inputHours) };
     setLogs(nextLogs);
     const nextTotalHours = totalHours + Number(inputHours);
