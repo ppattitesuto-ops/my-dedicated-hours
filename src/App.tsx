@@ -32,14 +32,17 @@ function App() {
     const fetchCloudLogs = async () => {
       const querySnapshot = await getDocs(collection(db, "studyLogs"));
       const loadedLogs: Record<string, number> = {};
+      let cloudTotalHours = 0;
       querySnapshot.forEach((docSnap) => {
         const cloudDatekey = docSnap.id;
         const cloudData = docSnap.data();
         const hours = cloudData.hours;
         const reactDatekey = cloudDatekey.replaceAll('-', '/');
         loadedLogs[reactDatekey] = hours;
+        cloudTotalHours += hours;
       });
       setLogs(loadedLogs);
+      setTotalHours(cloudTotalHours);
     };
     fetchCloudLogs();
   }, []);
