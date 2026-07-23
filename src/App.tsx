@@ -5,8 +5,8 @@ import CountDownMeter from "./CountDownMeter";
 import styles from './App.module.css';
 import StudyGraph from "./StudyGraph";
 import SaboriDays from "./SaboriDays";
-import { doc, setDoc } from "firebase/firestore";
-import { db} from "./firebase";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { db } from "./firebase";
 
 function App() {
   const [totalHours, setTotalHours] = useState(() => Number(localStorage.getItem('totalHours')) || 0);
@@ -27,6 +27,22 @@ function App() {
   const remainingDays = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
   const remainingHours = targetHours - totalHours;
   const dailyRequiredAverage = remainingDays > 0 ? (remainingHours / remainingDays) : 0;
+
+  useEffect(() => {
+    const fetchCloudLogs = async () => {
+      const querySnapshot = await getDocs(collection(db, "studyLogs"));
+      const loadedLogs: Record<string, number> = {};
+      querySnapshot.forEach((docSnap) => {
+        const cloudDatekey = docSnap.id;
+        const cloudData = docSnap.data();
+        const hours = cloudData.hours;
+        const reactDatekey = cloudDatekey.replaceAll('-', '/');
+        loadedLogs[reactDatekey] = hours;
+      });
+      setLogs(loadedLogs);
+    };
+    fetchCloudLogs();
+  }, []);
 
   // 変数の値が変わるたびに自動保存 
   useEffect(() => {
