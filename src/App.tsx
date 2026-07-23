@@ -77,9 +77,11 @@ function App() {
   const handleAddHours = async () => {
     if (!inputHours || Number(inputHours) <= 0) return;
     const d = new Date();
-    const todayStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const todayStr = `${d.getFullYear()}/${mm}/${dd}`;
     const cloudFormatDate = todayStr.replaceAll('/', '-');
-
+    console.log(todayStr);
     try {
       await setDoc(doc(db, "studyLogs", cloudFormatDate), {
         hours: Number(inputHours)
@@ -101,7 +103,9 @@ function App() {
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    const dateStr = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${d.getFullYear()}/${mm}/${dd}`;
     recentDateArr.push(dateStr);
   }
   recentDateArr.reverse();
